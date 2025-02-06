@@ -5,7 +5,7 @@
 ## Features  
 
 - **Encoding**: Converts binary data into a Base64 text representation.  
-- **Decoding**: Restores encoded data back gito its original form.  
+- **Decoding**: Restores encoded data back to its original form.  
 
 ## Installation  
 
