@@ -1,6 +1,7 @@
 package base64zero
 
 import (
+	"errors"
 	"strings"
 )
 
@@ -34,7 +35,9 @@ func Encode(source []byte) []byte {
 	return result
 }
 
-func Decode(source []byte) []byte {
+var ErrInvalidBase64 = errors.New("invalid base64")
+
+func Decode(source []byte) ([]byte, error) {
 	var result []byte
 
 	for i := 0; i < len(source); i += 4 {
@@ -47,7 +50,7 @@ func Decode(source []byte) []byte {
 			if source[i+j] != '=' {
 				index := strings.Index(base64Table, string(source[i+j]))
 				if index == -1 {
-					break
+					return []byte{}, ErrInvalidBase64
 				}
 
 				block |= uint32(index) << (18 - 6*j)
@@ -64,5 +67,5 @@ func Decode(source []byte) []byte {
 		}
 	}
 
-	return result
+	return result, nil
 }

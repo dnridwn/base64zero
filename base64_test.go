@@ -42,8 +42,9 @@ func TestEncode(t *testing.T) {
 
 func TestDecode(t *testing.T) {
 	testCases := []struct {
-		source   []byte
-		expected []byte
+		source      []byte
+		expected    []byte
+		expectedErr error
 	}{
 		{
 			source:   []byte("QQ=="),
@@ -69,10 +70,19 @@ func TestDecode(t *testing.T) {
 			source:   []byte("XiQqXiUqIyZeJCYqXiMqXiUjKSgpKikoKitfKw=="),
 			expected: []byte("^$*^%*#&^$&*^#*^%#)()*)(*+_+"),
 		},
+		{
+			source:      []byte("VGhpc0'lzVGV4dA=="),
+			expectedErr: ErrInvalidBase64,
+		},
 	}
 
 	for _, tc := range testCases {
-		result := Decode(tc.source)
+		result, err := Decode(tc.source)
+
+		if err != nil && err != tc.expectedErr {
+			t.Errorf("Unexpected error: %v", err)
+		}
+
 		if string(result) != string(tc.expected) {
 			t.Errorf("Expected '%s', but got '%s'", tc.expected, result)
 		}

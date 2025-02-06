@@ -31,8 +31,9 @@ func main() {
     encoded := base64zero.Encode(data)
     fmt.Println("Encoded:", string(encoded))
 
-    decoded := base64zero.Decode(encoded)
+    decoded, err := base64zero.Decode(encoded)
     fmt.Println("Decoded:", string(decoded))
+    fmt.Println("Decoded Err:", err)
 }
 ```
 
